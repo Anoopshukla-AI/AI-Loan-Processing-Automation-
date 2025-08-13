@@ -1,0 +1,59 @@
+{
+  "name": "Loan Processing Notifications",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "loan-webhook",
+        "options": {}
+      },
+      "id": "1",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:8000/upload",
+        "options": {}
+      },
+      "id": "2",
+      "name": "HTTP -> FastAPI Upload",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "channel": "loan-alerts",
+        "text": "New application processed: {{$json.application_id}} | risk {{$json.risk_score}}"
+      },
+      "id": "3",
+      "name": "Slack Notify",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP -> FastAPI Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP -> FastAPI Upload": {
+      "main": [
+        [
+          {
+            "node": "Slack Notify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
