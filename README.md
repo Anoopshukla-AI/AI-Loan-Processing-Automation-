@@ -1,6 +1,10 @@
-AI Loan Processing Automation (End-to-End)
+# AI Loan Processing Automation (End-to-End)
 
-A production-style, AI + automation project that extracts data from loan documents, validates KYC, scores risk, checks compliance, and pushes results to a dashboard + notifications. Built around FastAPI + n8n + GPT (LLM). Ready for recruiters to scan and for you to demo live.
+Manual loan processing is slow, inconsistent, and error-prone. Underwriters deal with varied document formats, missing fields, and subjective risk judgments — at scale, this creates bottlenecks and compliance exposure. This system automates the intake, extraction, validation, and routing of loan applications using a combination of OCR, LLM-based reasoning, and rule-based compliance checks.
+
+The pipeline works as follows: documents are submitted via a FastAPI endpoint, Tesseract extracts text from scanned files, and GPT-4o-mini performs KYC field validation and risk scoring. Each application is then routed by confidence threshold — high-confidence approvals and declines are handled automatically; ambiguous cases are queued for human review. All LLM outputs are validated with Pydantic before any decision is written, and GuardRails AI is integrated to block decisions inferred from protected characteristics.
+
+Every decision is persisted with its full reasoning chain to a structured audit log. The system ships with Docker + docker-compose, an n8n workflow JSON for automation orchestration, and a pytest test suite. No third-party loan data is required — sample docs are included.
 ✨ Why this repo helps you get hired
 
     Solves a real business problem (fintech-style loan workflows).
